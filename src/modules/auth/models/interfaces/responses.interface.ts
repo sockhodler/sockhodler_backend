@@ -1,8 +1,8 @@
 export interface ILoginResponse {
-  accessToken: string,
+  accessToken: string;
 }
 
 export interface IErrorResponse {
-  status: string,
-  message: string,
+  status: string;
+  message: string;
 }

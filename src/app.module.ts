@@ -22,11 +22,11 @@ import { EmailModule } from './modules/email/email.module';
       database: process.env.MYSQL_DATABASE,
       entities: [User],
       synchronize: true,
-      dropSchema: false
+      dropSchema: false,
     }),
     AuthModule,
     UserModule,
-    EmailModule
+    EmailModule,
   ],
 })
 export class AppModule {}

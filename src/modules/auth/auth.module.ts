@@ -15,7 +15,7 @@ import { LocalStrategy } from './strategies/local.strategy';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '60s' },
     }),
-    UserModule
+    UserModule,
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],

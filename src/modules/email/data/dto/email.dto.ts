@@ -10,25 +10,24 @@ export class EmailDTO {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  username: string
+  username: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
   @IsEmail()
-  email: string
+  email: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  nftName: string
+  nftName: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  asaId: string
+  asaId: string;
 }
