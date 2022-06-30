@@ -5,6 +5,12 @@ export interface IUserResponse {
   publicAddress: string;
 }
 
+export interface IStakeResponse {
+  fromAddress: string;
+  toAddress: string;
+  index: number;
+  amount: number;
+}
 export interface IErrorResponse {
   status: string;
   message: string;

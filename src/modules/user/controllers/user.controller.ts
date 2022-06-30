@@ -15,9 +15,11 @@ import { UserService } from '../services/user.service';
 import {
   IErrorResponse,
   IUserResponse,
+  IStakeResponse,
 } from '../data/interfaces/responses.interface';
 import { UpdateProfileDTO } from '../data/dto/update-profile.dto';
 import { LastDailyScanRewardsDTO } from '../data/dto/last-daily-scan-rewards.dto';
+import { StakeRecordDTO } from '../data/dto/stake-record.dto';
 
 @ApiTags('users')
 @Controller('/users')
@@ -41,6 +43,18 @@ export class UserController {
   @Header('Content-Type', 'application/json')
   async setLastDailyScanRewardsByUser(@Body(ValidationPipe) payload: LastDailyScanRewardsDTO): Promise<void> {
     this.userService.setLastDailyScanRewards(payload);
+  }
+
+  @Get('/stake-record')
+  @Header('Content-Type', 'application/json')
+  async getStakeRecord(@Query('fromAddress') fromAddress: string): Promise<IStakeResponse[] | IErrorResponse | null> {
+    return this.userService.getStakeRecord(fromAddress);
+  }
+
+  @Post('/stake-record')
+  @Header('Content-Type', 'application/json')
+  async setStakeRecord(@Body(ValidationPipe) payload: StakeRecordDTO): Promise<void> {
+    this.userService.setStakeRecord(payload);
   }
 
   @UseGuards(JwtAuthGuard)

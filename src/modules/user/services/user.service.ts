@@ -3,7 +3,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateProfileDTO } from '../data/dto/update-profile.dto';
+import { StakeRecordDTO } from '../data/dto/stake-record.dto';
 import { User } from '../data/schemas/user.schema';
+import { Stake } from '../data/schemas/stake.schema';
 import { LastDailyScanRewardsDTO } from '../data/dto/last-daily-scan-rewards.dto';
 
 @Injectable()
@@ -11,6 +13,8 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Stake)
+    private stakeRepository: Repository<Stake>,
   ) {}
 
   async getLastDailyScanRewards(username: string): Promise<User | any> {
@@ -32,6 +36,39 @@ export class UserService {
     if (user) {
       await this.userRepository.update(user.id, {
         lastDailyScanRewards: date
+      })
+    }
+  }
+
+  async getStakeRecord(fromAddress: string): Promise<Stake | any> {
+    const stakeRecordInfo = await this.stakeRepository.find({
+      where: {
+        fromAddress
+      }
+    })
+    return stakeRecordInfo;
+  }
+
+  async setStakeRecord(payload: StakeRecordDTO): Promise<void> {
+    const { fromAddress, toAddress, index, username, amount } = payload
+    const user = await this.stakeRepository.findOne({
+      where: {
+        username,
+        fromAddress,
+        index
+      }
+    })
+    if (user) {
+      await this.stakeRepository.update(user.id, {
+        amount: user.amount + amount
+      })
+    } else {
+      await this.stakeRepository.save({
+        username,
+        fromAddress,
+        toAddress,
+        index,
+        amount
       })
     }
   }
