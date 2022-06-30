@@ -9,6 +9,7 @@ import {
   UseGuards,
   ValidationPipe,
   Query,
+  Delete,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '@src/modules/auth/guards/jwt-auth.guard';
 import { UserService } from '../services/user.service';
@@ -19,7 +20,7 @@ import {
 } from '../data/interfaces/responses.interface';
 import { UpdateProfileDTO } from '../data/dto/update-profile.dto';
 import { LastDailyScanRewardsDTO } from '../data/dto/last-daily-scan-rewards.dto';
-import { StakeRecordDTO } from '../data/dto/stake-record.dto';
+import { StakeRecordDTO, DeleteStakeRecordDTO } from '../data/dto/stake-record.dto';
 
 @ApiTags('users')
 @Controller('/users')
@@ -55,6 +56,12 @@ export class UserController {
   @Header('Content-Type', 'application/json')
   async setStakeRecord(@Body(ValidationPipe) payload: StakeRecordDTO): Promise<void> {
     this.userService.setStakeRecord(payload);
+  }
+
+  @Delete('/stake-record')
+  @Header('Content-Type', 'application/json')
+  async deleteStakeRecord(@Body(ValidationPipe) payload: DeleteStakeRecordDTO): Promise<void> {
+    this.userService.deleteStakeRecord(payload);
   }
 
   @UseGuards(JwtAuthGuard)

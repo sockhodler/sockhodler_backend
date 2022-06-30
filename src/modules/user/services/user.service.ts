@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateProfileDTO } from '../data/dto/update-profile.dto';
-import { StakeRecordDTO } from '../data/dto/stake-record.dto';
+import { DeleteStakeRecordDTO, StakeRecordDTO } from '../data/dto/stake-record.dto';
 import { User } from '../data/schemas/user.schema';
 import { Stake } from '../data/schemas/stake.schema';
 import { LastDailyScanRewardsDTO } from '../data/dto/last-daily-scan-rewards.dto';
@@ -70,6 +70,19 @@ export class UserService {
         index,
         amount
       })
+    }
+  }
+
+  async deleteStakeRecord(payload: DeleteStakeRecordDTO): Promise<void> {
+    const { fromAddress, index, amount } = payload
+    const user = await this.stakeRepository.findOne({
+      where: {
+        fromAddress,
+        index
+      }
+    })
+    if (user && user.amount === amount) {
+      await this.stakeRepository.delete(user.id);
     }
   }
 
