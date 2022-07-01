@@ -81,8 +81,12 @@ export class UserService {
         index
       }
     })
-    if (user && user.amount === amount) {
+    if (user && user.amount <= amount) {
       await this.stakeRepository.delete(user.id);
+    } else if (user && user.amount > amount) {
+      await this.stakeRepository.update(user.id, {
+        amount: user.amount - amount,
+      })
     }
   }
 
