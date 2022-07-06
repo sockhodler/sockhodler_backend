@@ -32,7 +32,7 @@ export class StakeRecordDTO {
 
     @ApiProperty()
     @IsNotEmpty()
-    @IsNumber()
+    @IsString()
     date: string;
 }
 
