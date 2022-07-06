@@ -11,6 +11,21 @@ export interface IStakeResponse {
   index: number;
   amount: number;
 }
+
+export interface IMarketplaceResponse {
+  name: string;
+  unitName: string;
+  creator: string;
+  index: number;
+  amount: number;
+  total: number;
+  decimals: number;
+  url: string;
+  algoPrice: number;
+  socksPrice: number;
+  royalty: number;
+}
+
 export interface IErrorResponse {
   status: string;
   message: string;

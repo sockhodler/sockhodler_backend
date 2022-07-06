@@ -8,6 +8,8 @@ import { User } from '../data/schemas/user.schema';
 import { Stake } from '../data/schemas/stake.schema';
 import { LastDailyScanRewardsDTO } from '../data/dto/last-daily-scan-rewards.dto';
 import { LastWeeklyRewardsDTO } from '../data/dto/last-weekly-claim-rewards.dto';
+import { MarketplaceRecordDTO } from '../data/dto/marketplace-record.dto';
+import { Marketplace } from '../data/schemas/marketplace.schema';
 
 @Injectable()
 export class UserService {
@@ -16,6 +18,8 @@ export class UserService {
     private userRepository: Repository<User>,
     @InjectRepository(Stake)
     private stakeRepository: Repository<Stake>,
+    @InjectRepository(Marketplace)
+    private marketplaceRepository: Repository<Marketplace>,
   ) {}
 
   async getLastWeeklyClaimRewards(query: LastWeeklyRewardsDTO): Promise<string | any> {
@@ -120,6 +124,33 @@ export class UserService {
       await this.stakeRepository.update(user.id, {
         amount: user.amount - amount,
       })
+    }
+  }
+
+  async getMarketplaceRecord(): Promise<Marketplace | any> {
+    const marketplaceRecordInfo = await this.marketplaceRepository.find()
+    return marketplaceRecordInfo;
+  }
+
+  async setMarketplaceRecord(payload: MarketplaceRecordDTO): Promise<MarketplaceRecordDTO> {
+    const result = await this.marketplaceRepository.save(payload)
+    return result
+  }
+
+  async updateMarketplaceRecord(payload: MarketplaceRecordDTO): Promise<void> {
+    const { name, unitName, creator, index, amount, total, decimals, url, algoPrice, socksPrice, royalty, } = payload
+    const marketplace = await this.marketplaceRepository.findOne({
+      where: {
+        name,
+        unitName,
+        creator,
+        index,
+        decimals,
+        url
+      }
+    })
+    if (marketplace) {
+      await this.marketplaceRepository.update(marketplace.id, payload)
     }
   }
 
