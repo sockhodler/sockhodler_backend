@@ -21,6 +21,7 @@ import {
 import { UpdateProfileDTO } from '../data/dto/update-profile.dto';
 import { LastDailyScanRewardsDTO } from '../data/dto/last-daily-scan-rewards.dto';
 import { StakeRecordDTO, DeleteStakeRecordDTO } from '../data/dto/stake-record.dto';
+import { LastWeeklyRewardsDTO } from '../data/dto/last-weekly-claim-rewards.dto';
 
 @ApiTags('users')
 @Controller('/users')
@@ -32,6 +33,18 @@ export class UserController {
   @Header('Content-Type', 'application/json')
   async getUsers(): Promise<IUserResponse[] | IErrorResponse | null> {
     return this.userService.getUsers();
+  }
+
+  @Get('/last-weekly-claim-rewards')
+  @Header('Content-Type', 'application/json')
+  async getLastWeeklyClaimRewardsByUser(@Query() query: LastWeeklyRewardsDTO): Promise<IUserResponse[] | IErrorResponse | null> {
+    return this.userService.getLastWeeklyClaimRewards(query);
+  }
+
+  @Post('/last-weekly-claim-rewards')
+  @Header('Content-Type', 'application/json')
+  async setLastWeeklyClaimRewardsByUser(@Body(ValidationPipe) payload: LastWeeklyRewardsDTO): Promise<void> {
+    this.userService.setLastWeeklyClaimRewards(payload);
   }
 
   @Get('/last-daily-scan-rewards')

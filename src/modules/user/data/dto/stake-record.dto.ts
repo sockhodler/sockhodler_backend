@@ -29,6 +29,11 @@ export class StakeRecordDTO {
     @IsNotEmpty()
     @IsNumber()
     amount: number;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
+    date: string;
 }
 
 export class DeleteStakeRecordDTO {

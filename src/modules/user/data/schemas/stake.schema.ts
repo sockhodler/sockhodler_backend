@@ -25,6 +25,9 @@ import {
   
     @Column()
     amount: number;
+
+    @Column({ default: null })
+    lastWeeklyClaimRewards: string;
   
     @CreateDateColumn()
     created_at: Date;

@@ -7,6 +7,7 @@ import { DeleteStakeRecordDTO, StakeRecordDTO } from '../data/dto/stake-record.d
 import { User } from '../data/schemas/user.schema';
 import { Stake } from '../data/schemas/stake.schema';
 import { LastDailyScanRewardsDTO } from '../data/dto/last-daily-scan-rewards.dto';
+import { LastWeeklyRewardsDTO } from '../data/dto/last-weekly-claim-rewards.dto';
 
 @Injectable()
 export class UserService {
@@ -16,6 +17,36 @@ export class UserService {
     @InjectRepository(Stake)
     private stakeRepository: Repository<Stake>,
   ) {}
+
+  async getLastWeeklyClaimRewards(query: LastWeeklyRewardsDTO): Promise<string | any> {
+    const { username, fromAddress, toAddress, index } = query;
+    const stakeRecordInfo = await this.stakeRepository.findOne({
+      where: {
+        username,
+        fromAddress,
+        toAddress,
+        index
+      }
+    });
+    return stakeRecordInfo?.lastWeeklyClaimRewards;
+  }
+
+  async setLastWeeklyClaimRewards(payload: LastWeeklyRewardsDTO): Promise<void> {
+    const { username, fromAddress, toAddress, index, date } = payload;
+    const stakeRecordInfo = await this.stakeRepository.findOne({
+      where: {
+        username,
+        fromAddress,
+        toAddress,
+        index
+      }
+    });
+    if (stakeRecordInfo) {
+      await this.stakeRepository.update(stakeRecordInfo.id, {
+        lastWeeklyClaimRewards: date
+      })
+    }
+  }
 
   async getLastDailyScanRewards(username: string): Promise<User | any> {
     const user = await this.userRepository.findOne({
@@ -50,7 +81,7 @@ export class UserService {
   }
 
   async setStakeRecord(payload: StakeRecordDTO): Promise<void> {
-    const { fromAddress, toAddress, index, username, amount } = payload
+    const { fromAddress, toAddress, index, username, amount, date } = payload
     const user = await this.stakeRepository.findOne({
       where: {
         username,
@@ -60,7 +91,8 @@ export class UserService {
     })
     if (user) {
       await this.stakeRepository.update(user.id, {
-        amount: user.amount + amount
+        amount: user.amount + amount,
+        lastWeeklyClaimRewards: date
       })
     } else {
       await this.stakeRepository.save({
@@ -68,7 +100,8 @@ export class UserService {
         fromAddress,
         toAddress,
         index,
-        amount
+        amount,
+        lastWeeklyClaimRewards: date
       })
     }
   }
