@@ -24,7 +24,7 @@ import { UpdateProfileDTO } from '../data/dto/update-profile.dto';
 import { LastDailyScanRewardsDTO } from '../data/dto/last-daily-scan-rewards.dto';
 import { StakeRecordDTO, DeleteStakeRecordDTO } from '../data/dto/stake-record.dto';
 import { LastWeeklyRewardsDTO } from '../data/dto/last-weekly-claim-rewards.dto';
-import { MarketplaceRecordDTO } from '../data/dto/marketplace-record.dto';
+import { MarketplaceRecordDTO, UpdateMarketplaceRecordDTO } from '../data/dto/marketplace-record.dto';
 
 @ApiTags('users')
 @Controller('/users')
@@ -94,7 +94,7 @@ export class UserController {
 
   @Put('/marketplace-record')
   @Header('Content-Type', 'application/json')
-  async updateMarketplaceRecord(@Body(ValidationPipe) payload: MarketplaceRecordDTO): Promise<void> {
+  async updateMarketplaceRecord(@Body(ValidationPipe) payload: UpdateMarketplaceRecordDTO): Promise<void> {
     this.userService.updateMarketplaceRecord(payload);
   }
 
