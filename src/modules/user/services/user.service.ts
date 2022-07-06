@@ -25,7 +25,7 @@ export class UserService {
         username,
         fromAddress,
         toAddress,
-        index
+        index: Number(index)
       }
     });
     return stakeRecordInfo?.lastWeeklyClaimRewards;
@@ -38,7 +38,7 @@ export class UserService {
         username,
         fromAddress,
         toAddress,
-        index
+        index: Number(index)
       }
     });
     if (stakeRecordInfo) {

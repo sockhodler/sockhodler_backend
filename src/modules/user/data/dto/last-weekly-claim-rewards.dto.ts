@@ -23,7 +23,7 @@ export class LastWeeklyRewardsDTO {
     @ApiProperty()
     @IsNotEmpty()
     @IsNumber()
-    index: number;
+    index: number | string;
 
     @ApiProperty()
     @IsOptional()
